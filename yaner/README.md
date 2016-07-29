@@ -39,21 +39,21 @@ Usage of yaner:
 简单使用
 执行后在当前目录下生成 v.mp4 v.mp4.cfg文件。默认20个线程下载。
 ```
-downloader -url='http://xxxxx/v.mp4' -name='v.mp4'
+yaner -url='http://xxxxx/v.mp4' -name='v.mp4'
 ```
 
 其它参数的使用:
 ```
-downloader -url='http://xxxxx/v.mp4' -name='v.mp4' -db='v.mp4.tmp' -threads=10 -timeout=20 -S=2048
+yaner -url='http://xxxxx/v.mp4' -name='v.mp4' -db='v.mp4.tmp' -threads=10 -timeout=20 -S=2048
 ```
 
 ## 从之前的任务中途开始
 
 ```
-downloader -load -db="v.mp4.cfg"
+yaner -load -db="v.mp4.cfg"
 ```
 
 还可以重新指定threads和timeout参数
 ```
-downloader -load -db="v.mp4.cfg" -threads=10 -timeout=20
+yaner -load -db="v.mp4.cfg" -threads=10 -timeout=20
 ```
