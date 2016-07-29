@@ -38,6 +38,7 @@ func main() {
 
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(1)
 	}
 
 	downloader.Start()
@@ -48,7 +49,7 @@ func main() {
 		if report.TotalSize > 0 {
 			speed := float64(report.CompleteSize - lastComplete)
 			lastComplete = report.CompleteSize
-			fmt.Fprintln(os.Stdout, fmt.Sprintf("[report] %d/%d %d/%d completa: %.2f speed: %f kb/s",
+			fmt.Fprintln(os.Stdout, fmt.Sprintf("[report] %d/%d %d/%d complete: %.2f speed: %f kb/s",
 				report.DoneCount,
 				report.TaskCount,
 				report.CompleteSize,
