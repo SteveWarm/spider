@@ -38,7 +38,7 @@ type taskInfo struct {
 	UseTime   int64 `json:"usetime"`   // 当前为止用了多久时间 单位毫秒
 	DealTimes int   `json:"dealtimes"` // 被处理了多少次
 	Code      int   `json:"code"`
-	Error     error `json:"error"`
+	Error     error
 }
 
 type downloadInfo struct {
