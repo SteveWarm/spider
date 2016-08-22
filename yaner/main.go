@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -24,6 +25,7 @@ var (
 )
 
 func main() {
+	//	runtime.GOMAXPROCS(runtime.NumCPU())
 	loadConfig()
 	header := loadHeaderFromFile(*g_http_header)
 
@@ -79,8 +81,33 @@ func loadConfig() {
 			os.Exit(1)
 		}
 	} else {
-		if *g_file_url != "" && *g_file_name != "" {
-			//ok
+		if *g_file_url != "" {
+			if *g_file_name != "" {
+				//ok
+			} else {
+				uri, err := url.Parse(*g_file_url)
+				if err != nil {
+					fmt.Fprintln(os.Stderr, "[loadConfig] invalid url! url:", *g_file_url, "err:", err.Error())
+					os.Exit(1)
+				}
+
+				pathname := getPathName(uri.Path)
+				if pathname == "" {
+					fmt.Fprintln(os.Stderr, "can't get name!")
+					os.Exit(1)
+				}
+
+				fmt.Println("use this name:", pathname, "? yes or y to continue")
+				reader := bufio.NewReader(os.Stdin)
+				buff, _, _ := reader.ReadLine()
+				line := strings.ToLower(string(buff))
+				if line == "y" || line == "yes" {
+					*g_file_name = pathname
+				} else {
+					flag.Usage()
+					os.Exit(1)
+				}
+			}
 		} else {
 			flag.Usage()
 			os.Exit(1)
@@ -95,6 +122,7 @@ func loadConfig() {
 	if *g_file_db == "" {
 		*g_file_db = *g_file_name + ".cfg"
 	}
+
 }
 
 func loadHeaderFromFile(filename string) map[string]string {
@@ -134,4 +162,14 @@ func loadHeaderFromFile(filename string) map[string]string {
 	}
 
 	return header
+}
+
+func getPathName(path string) (name string) {
+	idx := strings.LastIndex(path, "/")
+	if idx >= 0 {
+		name = string(([]byte(path))[idx+1:])
+	} else {
+		name = path
+	}
+	return
 }
